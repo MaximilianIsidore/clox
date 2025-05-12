@@ -17,25 +17,27 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up CMake
-      uses: msys2/setup-msys2-action@v2
-      with:
-        msystem: MINGW64
-        pacman_args: -S --noconfirm base-devel mingw-w64-x86_64-cmake
-
-    - name: Install CMake
+    - name: Set up MSYS2 and Install CMake
       run: |
-        cmake --version
-        pacman -S --noconfirm mingw-w64-x86_64-cmake
+        echo "Setting up MSYS2 and installing CMake"
+        pacman -S --noconfirm base-devel mingw-w64-x86_64-cmake
+        cmake --version  # Verify CMake is installed
 
-    - name: Configure and Build with CMake
+    - name: Verify directory structure
       run: |
+        echo "Listing project directory:"
+        dir # This will list the contents to ensure we're in the correct place
+
+    - name: Build with CMake
+      run: |
+        echo "Creating build directory"
         mkdir build
         cd build
         cmake ..
-        cmake --build .
+        cmake --build . --verbose  # Added verbose flag for more detailed output
 
     - name: Run tests (if you have a test suite)
       run: |
+        echo "Running tests"
         cd build
-        ./tests  # Or replace with your test script/command
+        ./tests  # Or replace with your actual test command
