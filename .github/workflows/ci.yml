@@ -42,8 +42,4 @@ jobs:
         cmake ..
         cmake --build . --verbose  # Added verbose flag for more detailed output
 
-    - name: Run tests (if you have a test suite)
-      run: |
-        echo "Running tests"
-        cd build
-        ./tests  # Or replace with your actual test command
+    
