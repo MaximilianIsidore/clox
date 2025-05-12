@@ -17,11 +17,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up MSYS2 and Install CMake
+    - name: Install Chocolatey
       run: |
-        echo "Setting up MSYS2 and installing CMake"
-        pacman -S --noconfirm base-devel mingw-w64-x86_64-cmake
-        cmake --version  # Verify CMake is installed
+        Set-ExecutionPolicy Bypass -Scope Process -Force; 
+        iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+    - name: Install CMake using Chocolatey
+      run: |
+        choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+
+    - name: Verify CMake installation
+      run: cmake --version
 
     - name: Verify directory structure
       run: |
