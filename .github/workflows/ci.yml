@@ -1,0 +1,41 @@
+name: Clox CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up CMake
+      uses: msys2/setup-msys2-action@v2
+      with:
+        msystem: MINGW64
+        pacman_args: -S --noconfirm base-devel mingw-w64-x86_64-cmake
+
+    - name: Install CMake
+      run: |
+        cmake --version
+        pacman -S --noconfirm mingw-w64-x86_64-cmake
+
+    - name: Configure and Build with CMake
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        cmake --build .
+
+    - name: Run tests (if you have a test suite)
+      run: |
+        cd build
+        ./tests  # Or replace with your test script/command
